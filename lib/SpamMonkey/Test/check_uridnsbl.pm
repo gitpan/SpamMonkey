@@ -35,6 +35,7 @@ sub test {
             next URL if $uri->host =~ /$_\$/;
         }
         my @bits = SpamMonkey::Utils->host_to_ip($uri->host);
+        return 1 unless @bits; # Dead hosts are a threat in themselves
         my $ip = join ".", (reverse(@bits), $bl_stuff->{url});
         if (SpamMonkey::Utils->rbl_check($ip, $bl_stuff->{type},
                 $settings->{uridnsbl_timeout})) {
